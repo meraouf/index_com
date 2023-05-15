@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raouf</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: 2s ease-in-out;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            color: white;
+            transition: 200ms;
+        }
+
+        .intro {
+            border-radius: 50%;
+            background-image: url('assets/intro.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-size: 3.5rem;
+            background-position: center center;
+            height: 3rem;
+            width: 3rem;
+        }
+
+        .intro-loader {
+            width: 4rem;
+            height: 4rem;
+            border: 2px solid rgba(255, 255, 255, .1);
+            border-radius: 50%;
+            position: relative;
+            top: -2.5rem;
+            left: -2.5rem;
+            animation: loader;
+            animation-duration: 3s;
+            animation-fill-mode: forwards;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            transform-origin: center;
+        }
+
+        @keyframes loader {
+            from {
+                transform: translate(50%, 50%) rotateZ(0);
+            }
+            to {
+                transform: translate(50%, 50%) rotateZ(360deg);
+            }
+        }
+
+        .intro-loader span {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background-color: blue;
+            opacity: .6;
+        }
+
+        .intro-loader span:nth-child(1) { 
+            top: 0;
+            left: calc(100% - 16px);
+            background-color: red;
+        }
+
+        .intro-loader span:nth-child(3) {
+            top: calc(100% - 16px);
+            left: 8px;
+            background-color: yellow;
+        }
+
+        .loading h2 {
+            margin-top: 3rem;
+            opacity: .4;
+            font-size: 1.2rem;
+        }
+
+        .loading p {
+            opacity: .4;
+            font-size: .8rem;
+        }
+
+        .main {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            color: white;
+            opacity: 0;
+            visibility: hidden;
+            transition: 2s ease-in-out;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+        }
+        .logo h2{
+            font-size: .5rem;
+        }
+        
+        .logo p{
+            font-size: .35rem;
+        }
+
+        .logo img{
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #03d511;
+            margin-left: 8px;
+        }
+
+        .download {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: .2rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(to right, #2e02b2 50% 30%, #03d511);
+            box-shadow: 0 0 2px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+        }
+        .download:hover {
+            background: linear-gradient(to right, #2e02b2 100%, #03d511);
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
+        }
+
+        .slider {
+            width: 90%;
+            margin: auto;
+            display: flex;
+        }
+
+        .slider .right-slide {
+            width: 50%;
+            height: 70vh;
+            margin-right: 10px;
+            text-align: center;
+        }
+        .slider .right-slide img {
+            height: 70vh;
+            width: 100%;
+        }
+        .slider .left-slide {
+            width: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+        .slider .left-slide h1 {
+            font-size: 1rem;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .slider .left-slide h3 {
+            font-size: .8rem;
+            margin-top: 8px;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        @media screen and (width < 400px) {
+            .slider {
+                flex-direction: column;
+                margin-top: 40px;
+                margin-bottom: 40px;
+            }
+            .slider .left-slide {
+                width: 100%;
+                margin-top: 10px;
+                margin-bottom: 30px;
+            }
+
+            .slider .right-slide {
+                width: 100%;
+            }
+
+        }
+
+        .title {
+            animation: titleAnime .4s ease-in-out forwards;
+        }
+        .subtitle {
+            animation: titleAnime .4s ease-in-out forwards;
+            animation-delay: .4s;
+        }
+        @keyframes titleAnime {
+            from {
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+        .control-group {
+            margin-top: 10px;
+        }
+        button {
+            border: none;
+            background-color: #2e02b2;
+            padding: .1rem 1rem;
+            color: white;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading">
+        <div class="intro">
+            <div class="intro-loader">
+                <span class="point-one"></span>
+                <span class="point-tow"></span>
+                <span class="point-three"></span>
+            </div>
+        </div>
+        <h2>
+            RAOUF MEGHAOUI
+        </h2>
+        <p>WEB & MOBILE DEVELOPER</p>
+    </div>    
+    <div class="main">
+        <div class="logo">
+            <div>
+                <h2>RAOUF MEGHAOUI</h2>
+                <P>WEB & MOBILE DEVELOPER</P>
+            </div>
+            <img src="assets/intro.png" alt="logo">
+        </div>
+        <div class="slider">
+            <div class="right-slide">
+                <img src="" alt="document">
+            </div>
+            <div class="left-slide">
+                <h1>ETAT CIVIL</h1>
+                <h3>Extrait De Naissance</h3>
+                <div class="control-group">
+                    <button><</button>
+                    <button>></button>
+                </div>
+            </div>
+        </div>
+        <div class="download">
+            Télécharger 📄
+        </div>
+    </div>
+
+    <script>
+        const body = document.querySelector("body");
+        const intro = document.querySelector(".loading");
+        const mainSection = document.querySelector(".main");
+        const buttons = document.querySelectorAll("button");
+
+        const cat = document.querySelector('.left-slide h1');
+        const title = document.querySelector('.left-slide h3');
+        const image = document.querySelector('.right-slide img');
+        
+        let count = 0;
+        let Category = "";
+        let subTitle = "";
+
+        const slideContent = [
+            {
+                "cat" : "Lettre Administrative",
+                "doc" : "demande de recrutement",
+                "img" : "assets/images/lettre.png"
+            },
+            {
+                "cat" : "Etat Civil",
+                "doc" : "pièce d'identité",
+                "img" : "assets/images/cnid.jpg"
+            },
+            {
+                "cat" : "Etat Civil",
+                "doc" : "Photo d'identité",
+                "img" : "assets/images/photo.jpg"
+            },
+            {
+                "cat" : "Etat Civil",
+                "doc" : "asier judicière",
+                "img" : "assets/images/casier.png"
+            },
+            {
+                "cat" : "Etat Civil",
+                "doc" : "Extrait de naissance",
+                "img" : "assets/images/extr_n.jpg"
+            },
+            {
+                "cat" : "Etat Civil",
+                "doc" : "Certificat de résidanece",
+                "img" : "assets/images/crt_r.jpg"
+            },
+            {
+                "cat" : "Santé",
+                "doc" : "Certificat médicale 1",
+                "img" : "assets/images/crt_mdcal2.jpg"
+            },
+            {
+                "cat" : "Santé",
+                "doc" : "Certificat médicale 2",
+                "img" : "assets/images/xrt_mdcal.jpg"
+            },
+            {
+                "cat" : "Experiance Professionel",
+                "doc" : "Certificat de travail",
+                "img" : "assets/images/travail2.jpg"
+            },
+            {
+                "cat" : "Experiance Professionel",
+                "doc" : "Certificat de travail",
+                "img" : "assets/images/crt_trvl2.jpg"
+            },
+            {
+                "cat" : "Diplôme et formation",
+                "doc" : "formation professionel",
+                "img" : "assets/images/crt_scolar.jpg"
+            },
+            ,
+            {
+                "cat" : "Diplôme et formation",
+                "doc" : "Diplôme universitaire",
+                "img" : "assets/images/dplm.jpg"
+            },
+        ];
+        document.addEventListener("DOMContentLoaded", (e) => {
+            setTimeout(() => {
+                body.style.background = '#2a1078';
+                intro.style.opacity = 0;
+                intro.remove();
+                mainSection.style.display = "flex";
+                mainSection.style.opacity = "1";
+                mainSection.style.visibility = "visible"
+                cat.classList.add('title');
+                cat.textContent = slideContent[count].cat.toLocaleUpperCase();
+                
+                title.textContent = slideContent[count].doc.toLocaleUpperCase();
+                title.classList.add("subtitle");
+                image.src = slideContent[count]?.img
+            }, 5000)
+            
+        });
+        
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                if(button.innerText === "<") {
+                    if(count == 0) {
+                        button.disabled = true;
+                    } else {
+                        count--;
+                        buttons[1].disabled = false;
+
+                        
+
+                        cat.classList.add("title")
+                        cat.textContent = slideContent[count].cat.toUpperCase();
+                        title.textContent = slideContent[count].doc
+                        image.src = slideContent[count].img
+                        
+                    }
+                }else if(button.innerText === ">") {
+                    if(count == slideContent.length -1) {
+                        button.disabled = true;
+                    }else {
+                        count++;
+                        buttons[0].disabled = false;
+                        cat.textContent = slideContent[count].cat.toUpperCase();
+                        title.textContent = slideContent[count].doc
+                        image.src = slideContent[count].img
+                    }
+                }
+            })
+        })
+
+
+    </script>
+</body>
+</html>
